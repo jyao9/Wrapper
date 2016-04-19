@@ -1,5 +1,8 @@
 (function (root) {
 
+  var _docReady = false;
+  var _docReadyCallbacks = [];
+
   root.$l = function (arg) {
     if (typeof arg === "string") {
       var node = document.querySelectorAll(arg);
@@ -10,7 +13,7 @@
       var elList = new DOMNodeCollection(nodeArray);
       return elList;
     } else if (typeof arg === "function") {
-      console.log("In progress");
+      registerDocReadyCallback(arg);
     } else if (typeof arg === "object" && arg instanceof HTMLElement) {
       var newEl = new DOMNodeCollection([arg]);
       return newEl;
@@ -122,7 +125,9 @@
 
   DOMNodeCollection.prototype.remove = function () {
     this.empty();
-    this.array = [];
+    this.each(function(node){
+      node.parentNode.removeChild(node);
+    });
   };
 
   DOMNodeCollection.prototype.on = function (eventName, fn) {
@@ -160,41 +165,52 @@
   };
 
   DOMNodeCollection.ajax = function(options){
-  var request = new XMLHttpRequest();
-  var defaults = {
-    method: "GET",
-    url: "",
-    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-    data: {},
-    success: function(){},
-    error: function(){},
-  };
-  options = DOMNodeCollection.extend(defaults, options);
+    var request = new XMLHttpRequest();
+    var defaults = {
+      method: "GET",
+      url: "",
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+      data: {},
+      success: function(){},
+      error: function(){},
+    };
+    options = DOMNodeCollection.extend(defaults, options);
 
-  if (options.method.toUpperCase() === "GET"){
-    options.url += "?" + toQueryString(options.data);
+    if (options.method.toUpperCase() === "GET"){
+      options.url += "?" + toQueryString(options.data);
+    }
+
+    request.open(options.method, options.url, true);
+    request.onload = function (e) {
+      if (request.status === 200) {
+        options.success(request.response);
+      } else {
+        options.error(request.response);
+      }
+    };
+
+    request.send(JSON.stringify(options.data));
+  };
+
+  function toQueryString (obj){
+    var result = "";
+    for(var prop in obj){
+      if (obj.hasOwnProperty(prop)){
+        result += prop + "=" + obj[prop] + "&";
+      }
+    }
+    return result.substring(0, result.length - 1);
   }
 
-  request.open(options.method, options.url, true);
-  request.onload = function (e) {
-    if (request.status === 200) {
-      options.success(request.response);
+  function registerDocReadyCallback (func){
+    if(!_docReady){
+      _docReadyCallbacks.push(func);
     } else {
-      options.error(request.response);
-    }
-  };
-
-  request.send(JSON.stringify(options.data));
-};
-
-function toQueryString (obj){
-  var result = "";
-  for(var prop in obj){
-    if (obj.hasOwnProperty(prop)){
-      result += prop + "=" + obj[prop] + "&";
+      func();
     }
   }
-  return result.substring(0, result.length - 1);
-};
+
+  _docReady = true;
+  _docReadyCallbacks.forEach(function(func){ func(); });
 
 })(this);
