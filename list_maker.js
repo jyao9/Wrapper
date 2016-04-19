@@ -5,6 +5,7 @@ var createLi = function (title, key) {
   $li.html(title);
   $div.append($li);
 
+
   $l("li").off("click");
   $l("li").off("dblclick");
 
@@ -16,7 +17,6 @@ var createLi = function (title, key) {
     } else if (!$li.attr("class")) {
       $li.addClass("done");
     }
-
   });
 
   $l("li").on("dblclick", function (e) {
@@ -43,9 +43,7 @@ $l(".category").on("submit", function (e) {
   var key = "li-" + title;
   localStorage.setItem(key, title);
 
-  var $li = $l(document.createElement("li"));
-  $li.html(title);
-  $div.append($li);
+  createLi(title, key);
 
   document.getElementById('category-title').value = "";
 });
