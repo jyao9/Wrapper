@@ -46,10 +46,6 @@
   };
 
   DOMNodeCollection.prototype.append = function (arg) {
-    // debugger
-    // if (this.array.length > 0) {
-    //   return;
-    // }
 
     if (typeof arg === "object" && !(arg instanceof DOMNodeCollection)) {
       arg = root.$l(arg);

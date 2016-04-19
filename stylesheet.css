@@ -55,7 +55,8 @@ li {
 
 span {
   position: relative;
-  left: 22%;
+  left: 19%;
+  font-weight: bold;
 }
 
 .done {
