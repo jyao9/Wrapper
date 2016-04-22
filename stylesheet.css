@@ -28,7 +28,7 @@ h1 {
   font-weight: bold;
 }
 
-h2 {
+.author {
   text-align: center;
   position: relative;
   margin-bottom: 20px;
