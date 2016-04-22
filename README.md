@@ -7,6 +7,7 @@ Inspired by jQuery, Wrapper is a small JavaScript library that makes HTML elemen
 See a demo [here][link]
 [link]: http://www.jessicayao.com/Wrapper/
 
+
 ## jQuery Methods
 
 * $ or jQuery
