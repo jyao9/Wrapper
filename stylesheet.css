@@ -24,12 +24,14 @@ h1 {
   position: relative;
   text-align: center;
   font-size: 36px;
-  margin: 20px 0;
+  margin: 20px 0 10px 0;
   font-weight: bold;
 }
 
 h2 {
   text-align: center;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 h3 {
