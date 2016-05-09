@@ -160,7 +160,7 @@
     return arguments[0];
   };
 
-  DOMNodeCollection.ajax = function(options){
+  DOMNodeCollection.prototype.ajax = function(options){
     var request = new XMLHttpRequest();
     var defaults = {
       method: "GET",
